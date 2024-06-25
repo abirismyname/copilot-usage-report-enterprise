@@ -1,0 +1,18 @@
+name: 'Copilot Usage Report'
+description: 'Export Copilot usage for an Enterprise to CSV or JSON'
+branding:
+  icon: 'download'
+  color: 'blue'
+inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token'
+    required: true
+  ent_name: 
+    description: 'Enterprise name'
+    required: true
+  file_path:
+    description: ' or JSON File path'
+    required: true
+runs:
+  using: 'node20'
+  main: 'app/index.js'
