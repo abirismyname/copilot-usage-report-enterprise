@@ -19,9 +19,8 @@
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
-    "fs": "^0.0.1-security",
-    "json2csv": "^6.0.0-alpha.2",
-    "make-dir": "^4.0.0",
+    "@json2csv/plainjs": "^7.0.6",
+    "make-dir": "^5.0.0",
     "path": "^0.12.7"
   }
 }
