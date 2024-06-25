@@ -21,6 +21,7 @@
     "@actions/github": "^5.1.1",
     "@json2csv/plainjs": "^7.0.6",
     "make-dir": "^5.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "uuid": "^10.0.0"
   }
 }
