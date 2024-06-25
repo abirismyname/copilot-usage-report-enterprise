@@ -29,7 +29,7 @@ Include the copilot-usage-report action in your workflow.
         - name: Copilot usage
             uses: copilot-usage-report-enterprise@main
             with:        
-            GITHUB_TOKEN: ${{secrets.ORG_TOKEN}}
+            GITHUB_TOKEN: ${{secrets.ENT_TOKEN}}
             ent_name: 'octodemo'
             file_path: data/Copilot-Usage-Report.csv
         
@@ -56,7 +56,7 @@ Include the copilot-usage-report action in your workflow.
         - name: Copilot usage
             uses: copilot-usage-report-enterprise@main
             with:        
-            GITHUB_TOKEN: ${{secrets.ORG_TOKEN}}
+            GITHUB_TOKEN: ${{secrets.ENT_TOKEN}}
             ent_name: 'octodemo'
             file_path: data/Copilot-Usage-Report.json
         
