@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/abirismyname/copilot-usage-report-enterprise/issues"
   },
-  "homepage": "https://github.com/abirismyname/copilot-usage-report-enterprise#readme",
+  "homepage": "https://github.com/abirismyname/copilot-usage-report-enterprise#readme",n
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",

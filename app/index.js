@@ -1,20 +1,20 @@
 // libs for github & graphql
-import { getInput, setFailed } from '@actions/core';
-import { getOctokit } from '@actions/github';
-import { parse } from 'json2csv';
+const core = require('@actions/core');
+const github = require('@actions/github');
+const { parse } = require('json2csv');
 
 // libs for csv file creation
-import { dirname } from "path";
-import makeDir from "make-dir";
-import { existsSync, unlinkSync, appendFileSync, writeFileSync, readFileSync } from 'fs';
+const { dirname } = require("path");
+const makeDir = require("make-dir");
+const fs = require('fs');
 
 // get the octokit handle 
-const GITHUB_TOKEN = getInput('GITHUB_TOKEN');
-const octokit = getOctokit(GITHUB_TOKEN);
+const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
+const octokit = github.getOctokit(GITHUB_TOKEN);
 
 // inputs defined in action metadata file
-const ent_name = getInput('ent_name');
-const file_path = getInput('file_path');
+const ent_name = core.getInput('ent_name');
+const file_path = core.getInput('file_path');
 
 let totalSeats = 0;
 
@@ -63,7 +63,7 @@ async function getUsage(ent, pageNo) {
         });
 
     } catch (error) {
-        setFailed(error.message);
+        core.setFailed(error.message);
     }
 }
 
@@ -77,8 +77,8 @@ async function run(ent_name, file_path) {
     try {
         await makeDir(dirname(file_path));
         //delete the file, if exists
-        if (existsSync(file_path)) {
-            unlinkSync(file_path);
+        if (fs.existsSync(file_path)) {
+            fs.unlinkSync(file_path);
         }
         do {
             // invoke the graphql query execution
@@ -98,28 +98,28 @@ async function run(ent_name, file_path) {
                     const opts = { fields, "header": addTitleRow };
 
                     // append to the existing file (or create and append if needed)
-                    appendFileSync(file_path, `${parse(seatsData, opts)}\n`);
+                    fs.appendFileSync(file_path, `${parse(seatsData, opts)}\n`);
                 } else {
                     // Export to JSON file
                     //check the file exists or not 
-                    if (!existsSync(file_path)) {
+                    if (!fs.existsSync(file_path)) {
                         // The file doesn't exist, create a new one with an empty JSON object
-                        writeFileSync(file_path, JSON.stringify([], null, 2));
+                        fs.writeFileSync(file_path, JSON.stringify([], null, 2));
                     }
 
                     //check the file is empty or not
-                    let data = readFileSync(file_path, 'utf8'); // read the file
+                    let data = fs.readFileSync(file_path, 'utf8'); // read the file
 
                     // file contains only [] indicating a blank file
                     // append the entire data to the file
                     if (data.trim() === '[]') {
                         console.log("The JSON data array is empty.");
-                        writeFileSync(file_path, JSON.stringify(seatsData, null, 2));
+                        fs.writeFileSync(file_path, JSON.stringify(seatsData, null, 2));
                     } else {
                         //TODO: find the delta and append to existung file
                         let jsonData = JSON.parse(data); // parse the JSON data into a JavaScript array
                         jsonData = jsonData.concat(seatsData);
-                        writeFileSync(file_path, JSON.stringify(jsonData, null, 2));
+                        fs.writeFileSync(file_path, JSON.stringify(jsonData, null, 2));
                     }
                 }
                 // pagination to get next page data
@@ -132,7 +132,7 @@ async function run(ent_name, file_path) {
             });
         } while (remainingRecs > 0);
     } catch (error) {
-        setFailed(error.message);
+        core.setFailed(error.message);
     }
 }
 
